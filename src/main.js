@@ -15,4 +15,6 @@ render(new FilterView(), siteFilterElement);
 
 boardPresenter.init();
 
+//same
+
 
