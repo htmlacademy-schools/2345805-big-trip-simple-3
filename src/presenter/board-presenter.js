@@ -2,16 +2,18 @@ import SortView from '../view/sort-view';
 import CreateFormView from '../view/create-form-view';
 import NoPointsView from '../view/no-points-view';
 import {RenderPosition, render } from '../framework/render.js';
-import TripPointPresenter from './tripPoint-presenter';
+import TripPointPresenter from './trip-point-presenter';
 import TripPointListView from '../view/trip-point-list-view';
-import { SortType } from '../mock/const';
+import { SortType } from '../const';
 import { sortPointsByDate, sortPointsByPrice } from '../utils/sorts';
+import { getItemFromItemsById } from '../utils/utils';
 
 
 export default class BoardPresenter {
   #boardContainer = null;
   #tripPointsModel = null;
   #tripPoints = null;
+  #destinations = null;
 
   #tripPointsListComponent = new TripPointListView();
   #noTripPointComponent = new NoPointsView();
@@ -27,6 +29,7 @@ export default class BoardPresenter {
 
   init() {
     this.#tripPoints = [...this.#tripPointsModel.tripPoints];
+    this.#destinations = [...this.#tripPointsModel.destinations];
     this.#renderBoard();
     this.#sourcedTripPoints = [...this.#tripPointsModel.tripPoints];
   }
@@ -69,7 +72,7 @@ export default class BoardPresenter {
     // - очищаем список
     // - рисуем ему заново
     this.#clearTripPointList();
-    this.#renderTripPointsList();
+    this.#renderTripPoints();
   };
 
   #renderTripPoint(tripPoint) {
@@ -78,31 +81,28 @@ export default class BoardPresenter {
       tripPointList: this.#tripPointsListComponent.element,
       onModeChange: this.#handleModeChange
     });
-
-    tripPoinPresenter.init(tripPoint);
+    const currentDestination = getItemFromItemsById(this.#destinations, tripPoint.destination);
+    tripPoinPresenter.init(tripPoint, currentDestination);
     this.#tripPointPresenter.set(tripPoint.id, tripPoinPresenter);
   }
 
 
   #renderTripPoints() {
+    render(this.#tripPointsListComponent, this.#boardContainer);
     this.#tripPoints.forEach((tripPoint) => this.#renderTripPoint(tripPoint));
   }
 
-  #renderTripPointsList() {
-    render(this.#tripPointsListComponent, this.#boardContainer);
-    this.#renderTripPoints();
-  }
 
   #renderBoard() {
 
     if (this.#tripPoints.length === 0) {
-      render(this.#renderNoTripPoints, this.#boardContainer);
+      this.#renderNoTripPoints();
       return;
     }
     this.#renderSort();
 
     render(new CreateFormView(this.#tripPoints[0]), this.#tripPointsListComponent.element);
-    this.#renderTripPointsList();
+    this.#renderTripPoints();
 
   }
 

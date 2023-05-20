@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import { SortType } from '../mock/const';
+import { SortType } from '../const';
 import { capitalizeType } from '../utils/utils';
 import { isDisabled } from '../utils/sorts';
 
