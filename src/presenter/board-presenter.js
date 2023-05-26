@@ -73,7 +73,7 @@ export default class BoardPresenter {
   }
 
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
+    //console.log(actionType, updateType, update);
     switch (actionType) {
       case UserAction.ADD_TRIPPOINT:
         this.#tripPointsModel.addTripPoint(updateType, update);
@@ -152,7 +152,7 @@ export default class BoardPresenter {
 
 
   #renderTripPoints(tripPoints) {
-    console.log(tripPoints);
+    //console.log(tripPoints);
     tripPoints.forEach((tripPoint) => this.#renderTripPoint(tripPoint));
 
   }
