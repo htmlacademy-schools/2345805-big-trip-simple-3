@@ -1,5 +1,3 @@
-
-
 const getItemFromItemsById = (items, id) => (items.find((item) => item.id === id));
 
 const getRandomItemFromItems = (items) => items[Math.floor(Math.random() * items.length)];
